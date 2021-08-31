@@ -79,10 +79,12 @@ def main(argv):
     generateCsvOutput(payments,prices,outputfile)
 
 def generateConfigFile():
-    config = {"miner" : {"addr" : "","pool_addr": "","coin": "eth","network": ""},"API" : {"polygonscan" : {"key" : "","url" : "https://api.polygonscan.com/api"},"etherscan" : {"key" : "","url" : "https://api.etherscan.io/api"}}}; 
-    config_JSON = json.dump(config); 
+    config = {"miner" : {"addr" : "","pool_addr": "","coin": "eth","network": ""},"API" : {
+        "polygonscan" : {"key" : "","url" : "https://api.polygonscan.com/api"},
+        "etherscan" : {"key" : "","url" : "https://api.etherscan.io/api"},
+        "alphavantage" : {"key" : "","url" : "https://www.alphavantage.co/query"}}}; 
     file = open(config_file,"w"); 
-    file.write(config_JSON); 
+    json.dump(config.json(),file, indent= 6) 
     file.close();
 ## Read the conf file and return a conf object      
 def readConfFile():
