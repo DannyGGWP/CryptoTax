@@ -51,4 +51,4 @@ Alphavantage will only need to be quried at most once per day as it will save th
 ```
 
 ### Running the program
-Once the configuration file is set up all you need to do is run the program by typing ```py cryptotax.py -o <OutputFileName.csv> 
+Once the configuration file is set up all you need to do is run the program by typing ```py cryptotax.py -o <OutputFileName.csv>```
