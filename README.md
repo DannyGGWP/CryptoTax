@@ -4,7 +4,7 @@ Written with small time Etherium miners in mind, this application can pull payme
 It can then pull historical rates for etherium on the Day, Week, or Month, of the payout and will generate a CSV file for further processing in Excel or Sheets. 
 
 ## How to use. 
-This is a command line script and you will need python 3.9 to run it. Start by making your configuration.json file. you can generate a basic configuration file using the command `$cryptotax.py -g` or `$cryptotax.py --generate`. Once the base file is made you will need to fill in some important details. 
+This is a command line script and you will need python 3.9 and the request library to run it. Start by making your configuration.json file. You can generate a basic configuration file using the command `$cryptotax.py -g` or `$cryptotax.py --generate`. Once the base file is made you will need to fill in some important details. 
 ### Miner settings
 This setting is for your information. Lets go over the options. 
 - Your address (addr): manditory, the wallet address you want to inspect for incoming transactions. 
@@ -49,3 +49,6 @@ Alphavantage will only need to be quried at most once per day as it will save th
         }
     }
 ```
+
+### Running the program
+Once the configuration file is set up all you need to do is run the program by typing ```py cryptotax.py -o <OutputFileName.csv>```
