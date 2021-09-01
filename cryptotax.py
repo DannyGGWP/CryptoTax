@@ -19,7 +19,7 @@ import sys, getopt, requests, json, datetime, time, csv
 import cryptotools as ct; 
 from requests import api; 
 config_file = "configuration.json"
-historical_prices = "prices.json"
+
 help_msg = """
 #############################################
 This utility will pull recived transactions for an address and then pull the historical rates for the coin on the date of the txn and collate them into a CSV file for easy processing. \n

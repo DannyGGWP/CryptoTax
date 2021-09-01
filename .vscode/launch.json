@@ -4,11 +4,20 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
             "program": "${file}",
+            "console": "integratedTerminal",
+            "args": ["-o output.csv"]
+        },
+        {
+            "name": "Run CryptoTax Main",
+            "type": "python",
+            "request": "launch",
+            "program": "cryptotax.py",
             "console": "integratedTerminal",
             "args": ["-o output.csv"]
         }

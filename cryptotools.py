@@ -1,8 +1,9 @@
 
 from io import UnsupportedOperation
 from json.decoder import JSONDecodeError
+import os
 import sys, requests, json, datetime, time, csv
-
+historical_prices = "prices.json"
 def getPayments(config_obj):
     startBlk, endBlk = getTaxBlocks(config_obj); 
     network = config_obj["miner"]["network"]
@@ -17,17 +18,19 @@ def getPolygonPayments(config_obj,startblk = 0,endblk = 19999999):
     addr = config_obj["miner"]["addr"]
     sender = config_obj["miner"].get("pool_addr","")
     payload = {"module" : "account", "action" : "tokentx", "address" : "{addr}".format(addr = addr), "startblock": "{start}".format(start = startblk), "endblock" : "{end}".format(end = endblk), "sort": "asc", "apikey" : "{apiKey}".format(apiKey = apiKey)}
-    #print(payload)
     url = config_obj['API']["polygonscan"]["url"]
     response = requests.get(url,params=payload);
-    #print(response.json()); 
     if response.json()["message"] != "OK":
         print("Response not ok. giving up");
         sys.exit(3); 
     results = response.json()["result"]; 
+    return filterPayments(addr,sender,results); 
+    
+def filterPayments(addr,sender,results):
     payments = [];
     ## If no sender specified then do not filter results on the sender instead filter on the Reciver (the miner address)
     if sender == "":
+        print("No Pool Address specified. Grabing all incoming TXS")
         for result in results:
             if result["to"] == addr:
                 payments.append(result)
@@ -36,8 +39,9 @@ def getPolygonPayments(config_obj,startblk = 0,endblk = 19999999):
     for result in results:
         if result["from"] == sender:
             payments.append(result); 
+    if payments == []:
+        print("No transactions found. Check config file an insure Eth Address and Pool address are correct. ")
     return payments; 
-
 def getEthPayments(config_obj,startblk = 0,endblk = 19999999):
     apiKey = config_obj["API"]["etherscan"]["key"]
     addr = config_obj["miner"]["addr"]
@@ -49,18 +53,7 @@ def getEthPayments(config_obj,startblk = 0,endblk = 19999999):
         print("Response not ok. giving up");
         sys.exit(2); 
     results = response.json()["result"]; 
-    payments = [];
-    ## If no sender specified then do not filter results on the sender instead filter on the Reciver (the miner address)
-    if sender == "":
-        for result in results:
-            if result["to"] == addr:
-                payments.append(result)
-        return payments; 
-    ## scan for txs from the pool address
-    for result in results:
-        if result["from"] == sender:
-            payments.append(result); 
-    return payments; 
+    return filterPayments(addr,sender,results); 
 
 def getTaxBlocks(config_obj):
     network = config_obj["miner"]["network"]
@@ -134,10 +127,11 @@ def readPriceFile(config_obj):
         price_dict = {"Meta Data": {"6. Last Refreshed": "1970-01-01 00:00:00"}}
     last_refreshed = datetime.datetime.strptime(price_dict.get("Meta Data","Meta Data").get("6. Last Refreshed","1970-01-01 00:00:00"),'%Y-%m-%d %H:%M:%S'); 
     today = datetime.datetime.now()
-    print(last_refreshed)
-    print(today)
     if last_refreshed.date() < today.date():
+        f.close()
+        f = open(historical_prices,"w")
         print ("Historical data old... refreshing"); 
+        
         payload = {"function" : "{func}".format(func = api_function), "symbol": "ETH", "market":"USD","apikey":"{apikey}".format(apikey = api_key)}
         prices_raw = requests.get(config_obj["API"]["alphavantage"]["url"],params=payload)
         price_dict = prices_raw.json()
