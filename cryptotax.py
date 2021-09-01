@@ -1,4 +1,4 @@
-# Application to coalate Crypto Payments and hystorical prices from an address. 
+# Application to collate Crypto Payments and hystorical prices from an address. 
 #Copyright (C) 2021  Daniel Guerrera
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@ config_file = "configuration.json"
 historical_prices = "prices.json"
 help_msg = """
 #############################################
-This utility will pull recived transactions for an address and then pull the historical rates for the coin on the date of the txn and coalate them into a CSV file for easy processing. \n
+This utility will pull recived transactions for an address and then pull the historical rates for the coin on the date of the txn and collate them into a CSV file for easy processing. \n
 Currently supported Coins are Etherium, and this utility also supports The Eth Mainnet, and Polygon. 
 
 Usage: 
