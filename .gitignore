@@ -2,3 +2,4 @@ configuration.json
 prices.json
 *.csv
 __pycache__/cryptotools.cpython-39.pyc
+src/__pycache__/cryptotools.cpython-39.pyc

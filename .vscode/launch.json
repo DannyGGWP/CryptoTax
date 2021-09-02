@@ -17,7 +17,7 @@
             "name": "Run CryptoTax Main",
             "type": "python",
             "request": "launch",
-            "program": "cryptotax.py",
+            "program": "src\\cryptotax.py",
             "console": "integratedTerminal",
             "args": ["-o output.csv"]
         }
