@@ -32,12 +32,12 @@ def filterPayments(addr,sender,results):
     if sender == "":
         print("No Pool Address specified. Grabing all incoming TXS")
         for result in results:
-            if result["to"] == addr:
+            if result["to"].upper() == addr.upper():
                 payments.append(result)
         return payments; 
     ## scan for txs from the pool address
     for result in results:
-        if result["from"] == sender:
+        if result["from"].upper() == sender.upper():
             payments.append(result); 
     if payments == []:
         print("No transactions found. Check config file an insure Eth Address and Pool address are correct. ")
@@ -51,6 +51,7 @@ def getEthPayments(config_obj,startblk = 0,endblk = 19999999):
     response = requests.get(url,params=payload);
     if response.json()["message"] != "OK":
         print("Response not ok. giving up");
+        print(response.json())
         sys.exit(2); 
     results = response.json()["result"]; 
     return filterPayments(addr,sender,results); 
@@ -80,7 +81,9 @@ def getTaxBlocks(config_obj):
     endresponse = requests.get(api_url,params=endPayload); 
 
     if beginResponse.json()["message"]  != "OK" or endresponse.json()['message'] != "OK":
-        print("Response not ok. giving up");
+        print("Response not ok. giving up")
+        print(beginResponse.json())
+        print(endresponse.json())
         sys.exit(4);
 
     return (beginResponse.json().get("result",0), endresponse.json().get("result",19999999)) 
